@@ -21,7 +21,7 @@ void print_SDLError () {
   printf("SDL Error: %s\n", SDL_GetError());
 }
 
-int main () {
+int main (int argc, char* argv[]) {
   SDL_Window* janela = NULL;
   SDL_Renderer* render = NULL;
   SDL_Event e;
@@ -55,7 +55,7 @@ int main () {
 
   /* loop do "jogo" */
   while (!fim) {
-    /* gerencia os eventos do "jogo" */
+    /* eventos do "jogo" - sair e mudar a direcao do ponto */
     while (SDL_PollEvent(&e) != 0) {
       if (e.type == SDL_QUIT ||
          (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
@@ -68,13 +68,7 @@ int main () {
       }
     }
 
-    /* desenha o ponto na tela */
-    SDL_SetRenderDrawColor(render, 0x00, 0x00, 0x00, 0xFF);
-    SDL_RenderClear(render);
-    filledCircleRGBA(render, p.x, p.y, p.r, 0, 255, 0, 255);
-    SDL_RenderPresent(render);
-
-    /* move o ponto e detecta colisoes */
+    /* logica do "jogo" - move o ponto e detecta colisoes */
     if (p.d == CIMA) {
       if (p.y > RAIO - 0) p.y = p.y - RAIO;
       else p.d = BAIXO;
@@ -92,6 +86,11 @@ int main () {
       else p.d = ESQ;
     }
 
+    /* renderizacao do "jogo" - desenha o ponto na tela */
+    SDL_SetRenderDrawColor(render, 0x00, 0x00, 0x00, 0xFF);
+    SDL_RenderClear(render);
+    filledCircleRGBA(render, p.x, p.y, p.r, 0, 255, 0, 255);
+    SDL_RenderPresent(render);
   }
 
   /* finaliza */

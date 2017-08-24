@@ -23,7 +23,7 @@ int main() {
 
   /* loop do "jogo" */
   while (window.isOpen()) {
-    /* gerencia os eventos do "jogo" */
+    /* eventos do "jogo" - sair e mudar a direcao do ponto */
     sf::Event event;
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed ||
@@ -43,12 +43,7 @@ int main() {
       }
     }
 
-    /* desenha o ponto na tela */
-    window.clear();
-    window.draw(shape);
-    window.display();
-
-    /* move o ponto e detecta colisoes */
+    /* logica do "jogo" - move o ponto e detecta colisoes */
     if (direcao == CIMA) {
       shape.setPosition(shape.getPosition().x,shape.getPosition().y-1);
       if (shape.getPosition().y < RAIO - 0)
@@ -69,6 +64,12 @@ int main() {
       if (shape.getPosition().x > LARGURA - RAIO)
         direcao = ESQ;
     }
+
+    /* renderizacao do "jogo" - desenha o ponto na tela */
+    window.clear();
+    window.draw(shape);
+    window.display();
+
   }
   return 0;
 }

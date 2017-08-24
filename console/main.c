@@ -25,13 +25,16 @@ int main () {
   inicializa(tela, &p);
 
   while (tecla != 27) {
-    limpa_tela();
-    desenha(tela);
+    /* eventos */
     if (kbhit()) {
       tecla = getch();
       muda_direcao(&p, tecla);
     }
+    /* logica */
     move(tela, &p);
+    /* renderizacao */
+    limpa_tela();
+    desenha(tela);
     dorme(1);
   }
 
