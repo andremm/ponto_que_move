@@ -5,10 +5,12 @@
 #define ALTURA 600
 #define RAIO 10.f
 
-#define CIMA 1
-#define BAIXO 2
-#define ESQ 3
-#define DIR 4
+enum direcao {
+  CIMA,
+  BAIXO,
+  ESQUERDA,
+  DIREITA,
+};
 
 int main() {
   /* cria a janela */
@@ -37,9 +39,9 @@ int main() {
         else if (event.key.code == sf::Keyboard::Down && shape.getPosition().y < ALTURA - RAIO)
           direcao = BAIXO;
         else if (event.key.code == sf::Keyboard::Left && shape.getPosition().x > RAIO - 0)
-          direcao = ESQ;
+          direcao = ESQUERDA;
         else if (event.key.code == sf::Keyboard::Right && shape.getPosition().x < LARGURA - RAIO)
-          direcao = DIR;
+          direcao = DIREITA;
       }
     }
 
@@ -54,15 +56,15 @@ int main() {
       if (shape.getPosition().y > ALTURA - RAIO)
         direcao = CIMA;
     }
-    else if (direcao == ESQ) {
+    else if (direcao == ESQUERDA) {
       shape.setPosition(shape.getPosition().x-1,shape.getPosition().y);
       if (shape.getPosition().x < RAIO - 0)
-        direcao = DIR;
+        direcao = DIREITA;
     }
     else {
       shape.setPosition(shape.getPosition().x+1,shape.getPosition().y);
       if (shape.getPosition().x > LARGURA - RAIO)
-        direcao = ESQ;
+        direcao = ESQUERDA;
     }
 
     /* renderizacao do "jogo" - desenha o ponto na tela */

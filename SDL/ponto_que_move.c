@@ -5,16 +5,18 @@
 
 #define LARGURA 800
 #define ALTURA 600
-#define RAIO 10
 
-#define CIMA 1
-#define BAIXO 2
-#define ESQ 3
-#define DIR 4
+typedef enum direcao {
+  CIMA,
+  BAIXO,
+  ESQUERDA,
+  DIREITA,
+} Direcao;
 
 typedef struct ponto {
   int x, y;
-  int r, d;
+  int raio;
+  Direcao d;
 } Ponto;
 
 void print_SDLError () {
@@ -26,7 +28,7 @@ int main (int argc, char* argv[]) {
   SDL_Renderer* render = NULL;
   SDL_Event e;
   int fim = 0;
-  Ponto p = { LARGURA / 2, ALTURA / 2, RAIO, CIMA };
+  Ponto p = { LARGURA / 2, ALTURA / 2, 10, CIMA };
 
   /* inicializa a SDL */
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -61,35 +63,35 @@ int main (int argc, char* argv[]) {
          (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
         fim = 1;
       if (e.type == SDL_KEYDOWN) {
-        if (e.key.keysym.sym == SDLK_UP && p.y > RAIO - 0) p.d = CIMA;
-        else if (e.key.keysym.sym == SDLK_DOWN && p.y < ALTURA - RAIO) p.d = BAIXO;
-        else if (e.key.keysym.sym == SDLK_LEFT && p.x > RAIO - 0) p.d = ESQ;
-        else if (e.key.keysym.sym == SDLK_RIGHT && p.x < LARGURA - RAIO) p.d = DIR;
+        if (e.key.keysym.sym == SDLK_UP && p.y > p.raio - 0) p.d = CIMA;
+        else if (e.key.keysym.sym == SDLK_DOWN && p.y < ALTURA - p.raio) p.d = BAIXO;
+        else if (e.key.keysym.sym == SDLK_LEFT && p.x > p.raio - 0) p.d = ESQUERDA;
+        else if (e.key.keysym.sym == SDLK_RIGHT && p.x < LARGURA - p.raio) p.d = DIREITA;
       }
     }
 
     /* logica do "jogo" - move o ponto e detecta colisoes */
     if (p.d == CIMA) {
-      if (p.y > RAIO - 0) p.y = p.y - RAIO;
+      if (p.y > p.raio - 0) p.y = p.y - p.raio;
       else p.d = BAIXO;
     }
     else if (p.d == BAIXO) {
-      if (p.y < ALTURA - RAIO) p.y = p.y + RAIO;
+      if (p.y < ALTURA - p.raio) p.y = p.y + p.raio;
       else p.d = CIMA;
     }
-    else if (p.d == ESQ) {
-      if (p.x > RAIO - 0) p.x = p.x - RAIO;
-      else p.d = DIR;
+    else if (p.d == ESQUERDA) {
+      if (p.x > p.raio - 0) p.x = p.x - p.raio;
+      else p.d = DIREITA;
     }
     else {
-      if (p.x < LARGURA - RAIO) p.x = p.x + RAIO;
-      else p.d = ESQ;
+      if (p.x < LARGURA - p.raio) p.x = p.x + p.raio;
+      else p.d = ESQUERDA;
     }
 
     /* renderizacao do "jogo" - desenha o ponto na tela */
     SDL_SetRenderDrawColor(render, 0x00, 0x00, 0x00, 0xFF);
     SDL_RenderClear(render);
-    filledCircleRGBA(render, p.x, p.y, p.r, 0, 255, 0, 255);
+    filledCircleRGBA(render, p.x, p.y, p.raio, 0x00, 0xFF, 0x00, 0xFF);
     SDL_RenderPresent(render);
   }
 
