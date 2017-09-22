@@ -72,20 +72,28 @@ int main (int argc, char* argv[]) {
 
     /* logica do "jogo" - move o ponto e detecta colisoes */
     if (p.d == CIMA) {
-      if (p.y > p.raio - 0) p.y = p.y - p.raio;
-      else p.d = BAIXO;
+      /* se bateu no teto vai para baixo */
+      if (p.y == p.raio) p.d = BAIXO;
+      /* senao continua indo para cima */
+      else p.y = p.y - p.raio;
     }
     else if (p.d == BAIXO) {
-      if (p.y < ALTURA - p.raio) p.y = p.y + p.raio;
-      else p.d = CIMA;
+      /* se bateu no chao vai para cima */
+      if (p.y == ALTURA - p.raio) p.d = CIMA;
+      /* senao continua indo para baixo */
+      else p.y = p.y + p.raio;
     }
     else if (p.d == ESQUERDA) {
-      if (p.x > p.raio - 0) p.x = p.x - p.raio;
-      else p.d = DIREITA;
+      /* se bateu na parede esquerda vai para a direita */
+      if (p.x == p.raio) p.d = DIREITA;
+      /* senao continua indo para a esquerda */
+      else p.x = p.x - p.raio;
     }
     else {
-      if (p.x < LARGURA - p.raio) p.x = p.x + p.raio;
-      else p.d = ESQUERDA;
+      /* se bateu na parede direita vai para a esquerda */
+      if (p.x == LARGURA - p.raio) p.d = ESQUERDA;
+      /* senao continua indo para a direita */
+      else p.x = p.x + p.raio;
     }
 
     /* renderizacao do "jogo" - desenha o ponto na tela */
